@@ -1,52 +1,87 @@
-local a="1"
-local function b()
-    local c=Instance.new("ScreenGui")
-    local d=Instance.new("Frame")
-    local e=Instance.new("TextLabel")
-    local f=Instance.new("TextBox")
-    local g=Instance.new("TextButton")
-    local h=Instance.new("UICorner")
-    c.Parent=game.Players.LocalPlayer:WaitForChild("PlayerGui")
-    d.Parent=c
-    d.Size=UDim2.new(0,400,0,200)
-    d.Position=UDim2.new(0.5,-200,0.5,-100)
-    d.BackgroundColor3=Color3.fromRGB(25,25,25)
-    h.Parent=d
-    h.CornerRadius=UDim.new(0.1,0)
-    e.Parent=d
-    e.Size=UDim2.new(1,0,0.3,0)
-    e.Position=UDim2.new(0,0,0,10)
-    e.Text="请输入卡密以继续"
-    e.TextColor3=Color3.fromRGB(255,255,255)
-    e.Font=Enum.Font.GothamBold
-    e.TextSize=25
-    e.BackgroundTransparency=1
-    f.Parent=d
-    f.Size=UDim2.new(0.8,0,0.2,0)
-    f.Position=UDim2.new(0.1,0,0.4,0)
-    f.PlaceholderText="请输入卡密"
-    f.TextColor3=Color3.fromRGB(0,0,0)
-    f.Font=Enum.Font.Gotham
-    f.TextSize=20
-    g.Parent=d
-    g.Size=UDim2.new(0.6,0,0.2,0)
-    g.Position=UDim2.new(0.2,0,0.7,0)
-    g.Text="确认"
-    g.TextColor3=Color3.fromRGB(255,255,255)
-    g.Font=Enum.Font.GothamBold
-    g.TextSize=20
-    g.BackgroundColor3=Color3.fromRGB(0,170,255)
-    local i=Instance.new("UICorner")
-    i.Parent=g
-    i.CornerRadius=UDim.new(0.3,0)
-    local function j()
-        if f.Text==a then
-            c:Destroy()
-            loadstring(game:HttpGet("https://pastebin.com/raw/fGnHPrn2"))()
+local correctKey = "wby11116666"  
+local scriptUrl = "https://raw.githubusercontent.com/eyu1111/-2/main/%E6%B2%B3%E5%8C%97.txt"
+
+local function createOptimizedUI()
+    
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+    
+    local frame = Instance.new("Frame")
+    frame.Parent = screenGui
+    frame.Size = UDim2.new(0, 400, 0, 300)
+    frame.Position = UDim2.new(0.5, -200, 0.5, -150)
+    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    frame.BackgroundTransparency = 0.1
+
+    
+    local uiCorner = Instance.new("UICorner")
+    uiCorner.Parent = frame
+    uiCorner.CornerRadius = UDim.new(0.1, 0)
+
+    
+    local uiGradient = Instance.new("UIGradient")
+    uiGradient.Parent = frame
+    uiGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 170, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 255, 170))
+    }
+
+    
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Parent = frame
+    titleLabel.Size = UDim2.new(1, 0, 0.2, 0)
+    titleLabel.Position = UDim2.new(0, 0, 0, 10)
+    titleLabel.Text = "需要卡密微信 wby11116666"
+    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    titleLabel.Font = Enum.Font.GothamBold
+    titleLabel.TextSize = 24
+    titleLabel.BackgroundTransparency = 1
+
+    
+    local inputBox = Instance.new("TextBox")
+    inputBox.Parent = frame
+    inputBox.Size = UDim2.new(0.8, 0, 0.2, 0)
+    inputBox.Position = UDim2.new(0.1, 0, 0.4, 0)
+    inputBox.PlaceholderText = "请输入卡密"
+    inputBox.Text = ""
+    inputBox.TextColor3 = Color3.fromRGB(0, 0, 0)
+    inputBox.Font = Enum.Font.Gotham
+    inputBox.TextSize = 18
+    inputBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+
+    
+    local inputBoxCorner = Instance.new("UICorner")
+    inputBoxCorner.Parent = inputBox
+    inputBoxCorner.CornerRadius = UDim.new(0.1, 0)
+
+    
+    local loadButton = Instance.new("TextButton")
+    loadButton.Parent = frame
+    loadButton.Size = UDim2.new(0.5, 0, 0.2, 0)
+    loadButton.Position = UDim2.new(0.25, 0, 0.7, 0)
+    loadButton.Text = "加载脚本"
+    loadButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    loadButton.Font = Enum.Font.GothamBold
+    loadButton.TextSize = 24
+    loadButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+
+    
+    local buttonCorner = Instance.new("UICorner")
+    buttonCorner.Parent = loadButton
+    buttonCorner.CornerRadius = UDim.new(0.3, 0)
+
+    
+    loadButton.MouseButton1Click:Connect(function()
+        if inputBox.Text == correctKey then
+            loadstring(game:HttpGet(scriptUrl))()
+            screenGui:Destroy() 
         else
-            e.Text="卡密无效，请重试"
+            inputBox.Text = ""
+            inputBox.PlaceholderText = "卡密错误，请重试"
+            inputBox.PlaceholderColor3 = Color3.fromRGB(255, 0, 0)
         end
-    end
-    g.MouseButton1Click:Connect(j)
+    end)
 end
-b()
+
+createOptimizedUI()
