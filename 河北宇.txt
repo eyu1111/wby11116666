@@ -1,87 +1,123 @@
-local correctKey = "wby11116666yyds"  
+local correctKey = "6666yyds"
 local scriptUrl = "https://raw.githubusercontent.com/eyu1111/-2/main/%E6%B2%B3%E5%8C%97.txt"
+local whitelistedUsers = {"yukjm22", "yukjm22","xlkinjhs"} 
 
-local function createOptimizedUI()
-    
-    local screenGui = Instance.new("ScreenGui")
-    screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
-    
-    local frame = Instance.new("Frame")
-    frame.Parent = screenGui
-    frame.Size = UDim2.new(0, 400, 0, 300)
-    frame.Position = UDim2.new(0.5, -200, 0.5, -150)
-    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    frame.BackgroundTransparency = 0.1
+local function isUserWhitelisted()
+    local player = game.Players.LocalPlayer
+    return table.find(whitelistedUsers, player.Name) ~= nil
+end
 
-    
-    local uiCorner = Instance.new("UICorner")
-    uiCorner.Parent = frame
-    uiCorner.CornerRadius = UDim.new(0.1, 0)
 
-    
-    local uiGradient = Instance.new("UIGradient")
-    uiGradient.Parent = frame
-    uiGradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 170, 255)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 255, 170))
-    }
+local function createUIElement(elementType, properties, parent)
+    local element = Instance.new(elementType)
+    for propName, propValue in pairs(properties) do
+        element[propName] = propValue
+    end
+    element.Parent = parent
+    return element
+end
 
-    
-    local titleLabel = Instance.new("TextLabel")
-    titleLabel.Parent = frame
-    titleLabel.Size = UDim2.new(1, 0, 0.2, 0)
-    titleLabel.Position = UDim2.new(0, 0, 0, 10)
-    titleLabel.Text = "需要卡密微信 wby11116666"
-    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    titleLabel.Font = Enum.Font.GothamBold
-    titleLabel.TextSize = 24
-    titleLabel.BackgroundTransparency = 1
 
-    
-    local inputBox = Instance.new("TextBox")
-    inputBox.Parent = frame
-    inputBox.Size = UDim2.new(0.8, 0, 0.2, 0)
-    inputBox.Position = UDim2.new(0.1, 0, 0.4, 0)
-    inputBox.PlaceholderText = "请输入卡密"
-    inputBox.Text = ""
-    inputBox.TextColor3 = Color3.fromRGB(0, 0, 0)
-    inputBox.Font = Enum.Font.Gotham
-    inputBox.TextSize = 18
-    inputBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+local function loadScript()
+    print("开始加载脚本...")
+    local success, result = pcall(function()
+        return loadstring(game:HttpGet(scriptUrl))()
+    end)
+    if success then
+        print("脚本加载成功")
+    else
+        warn("脚本加载失败: " .. tostring(result))
+    end
+end
 
-    
-    local inputBoxCorner = Instance.new("UICorner")
-    inputBoxCorner.Parent = inputBox
-    inputBoxCorner.CornerRadius = UDim.new(0.1, 0)
 
-    
-    local loadButton = Instance.new("TextButton")
-    loadButton.Parent = frame
-    loadButton.Size = UDim2.new(0.5, 0, 0.2, 0)
-    loadButton.Position = UDim2.new(0.25, 0, 0.7, 0)
-    loadButton.Text = "加载脚本"
-    loadButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    loadButton.Font = Enum.Font.GothamBold
-    loadButton.TextSize = 24
-    loadButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+local function createWindow(title, buttonText, buttonCallback)
+    local screenGui = createUIElement("ScreenGui", {}, game.Players.LocalPlayer:WaitForChild("PlayerGui"))
 
-    
-    local buttonCorner = Instance.new("UICorner")
-    buttonCorner.Parent = loadButton
-    buttonCorner.CornerRadius = UDim.new(0.3, 0)
+    local frame = createUIElement("Frame", {
+        Size = UDim2.new(0, 400, 0, 300),
+        Position = UDim2.new(0.5, -200, 0.5, -150),
+        BackgroundColor3 = Color3.fromRGB(30, 30, 30),
+        BackgroundTransparency = 0.1
+    }, screenGui)
 
-    
-    loadButton.MouseButton1Click:Connect(function()
-        if inputBox.Text == correctKey then
-            loadstring(game:HttpGet(scriptUrl))()
-            screenGui:Destroy() 
+    createUIElement("UICorner", {CornerRadius = UDim.new(0.1, 0)}, frame)
+
+    createUIElement("TextLabel", {
+        Size = UDim2.new(1, 0, 0.2, 0),
+        Position = UDim2.new(0, 0, 0, 10),
+        Text = title,
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        Font = Enum.Font.GothamBold,
+        TextSize = 24,
+        BackgroundTransparency = 1
+    }, frame)
+
+    local button = createUIElement("TextButton", {
+        Size = UDim2.new(0.5, 0, 0.2, 0),
+        Position = UDim2.new(0.25, 0, 0.7, 0),
+        Text = buttonText,
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        Font = Enum.Font.GothamBold,
+        TextSize = 24,
+        BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+    }, frame)
+
+    createUIElement("UICorner", {CornerRadius = UDim.new(0.3, 0)}, button)
+
+    button.MouseButton1Click:Connect(function()
+        buttonCallback(screenGui)
+    end)
+end
+
+
+local function createKeyUI()
+    createWindow("请输入卡密", "加载脚本", function(screenGui)
+        local frame = screenGui:FindFirstChildOfClass("Frame")
+        local inputBox = createUIElement("TextBox", {
+            Size = UDim2.new(0.8, 0, 0.2, 0),
+            Position = UDim2.new(0.1, 0, 0.4, 0),
+            PlaceholderText = "请输入卡密",
+            Text = "",
+            TextColor3 = Color3.fromRGB(0, 0, 0),
+            Font = Enum.Font.Gotham,
+            TextSize = 18,
+            BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        }, frame)
+
+        createUIElement("UICorner", {CornerRadius = UDim.new(0.1, 0)}, inputBox)
+
+        frame.Parent:FindFirstChild("TextButton").MouseButton1Click:Connect(function()
+            if inputBox.Text == correctKey then
+                print("卡密验证通过，加载脚本...")
+                loadScript()
+                screenGui:Destroy()
+            else
+                print("卡密验证失败")
+                inputBox.Text = ""
+                inputBox.PlaceholderText = "卡密错误，请重试"
+                inputBox.PlaceholderColor3 = Color3.fromRGB(255, 0, 0)
+            end
+        end)
+    end)
+end
+
+
+local function createWhitelistUI()
+    createWindow("白名单验证", "开始验证", function(screenGui)
+        if isUserWhitelisted() then
+            print("白名单验证通过")
+            loadScript()
+            screenGui:Destroy()
         else
-            inputBox.Text = ""
-            inputBox.PlaceholderText = "卡密错误，请重试"
-            inputBox.PlaceholderColor3 = Color3.fromRGB(255, 0, 0)
+            print("白名单验证失败，进入卡密验证")
+            screenGui:Destroy()
+            wait(0.5) -- 确保窗口销毁后再创建新的UI
+            createKeyUI()
         end
     end)
 end
 
-createOptimizedUI()
+
+createWhitelistUI()
