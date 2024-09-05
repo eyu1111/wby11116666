@@ -1,11 +1,16 @@
 local correctKey = "6666yyds"
 local scriptUrl = "https://raw.githubusercontent.com/eyu1111/-2/main/%E6%B2%B3%E5%8C%97.txt"
-local whitelistedUsers = {"yukjm22", "huizigegelll","xlkinjhs"} 
+local whitelistedUsers = {"yukjm2222", "xlkinjhs","huizigegelll",""} 
 
 
 local function isUserWhitelisted()
     local player = game.Players.LocalPlayer
-    return table.find(whitelistedUsers, player.Name) ~= nil
+    for _, username in pairs(whitelistedUsers) do
+        if player.Name == username then
+            return true
+        end
+    end
+    return false
 end
 
 
@@ -22,12 +27,17 @@ end
 local function loadScript()
     print("开始加载脚本...")
     local success, result = pcall(function()
-        return loadstring(game:HttpGet(scriptUrl))()
+        print("尝试获取脚本内容： " .. scriptUrl) 
+        local scriptContent = game:HttpGet(scriptUrl) 
+        print("脚本内容获取成功，长度为: " .. tostring(#scriptContent)) 
+
+        return loadstring(scriptContent)() 
     end)
+    
     if success then
         print("脚本加载成功")
     else
-        warn("脚本加载失败: " .. tostring(result))
+        warn("脚本加载失败: " .. tostring(result)) 
     end
 end
 
@@ -66,7 +76,9 @@ local function createWindow(title, buttonText, buttonCallback)
 
     createUIElement("UICorner", {CornerRadius = UDim.new(0.3, 0)}, button)
 
+    
     button.MouseButton1Click:Connect(function()
+        print("按钮被点击，开始处理逻辑")  
         buttonCallback(screenGui)
     end)
 end
@@ -88,8 +100,14 @@ local function createKeyUI()
 
         createUIElement("UICorner", {CornerRadius = UDim.new(0.1, 0)}, inputBox)
 
-        frame.Parent:FindFirstChild("TextButton").MouseButton1Click:Connect(function()
-            if inputBox.Text == correctKey then
+        
+        local button = frame:WaitForChild("TextButton") 
+        button.MouseButton1Click:Connect(function()
+            print("卡密验证按钮点击") 
+            local input = inputBox.Text
+            print("输入的卡密: " .. input) 
+
+            if input == correctKey then
                 print("卡密验证通过，加载脚本...")
                 loadScript()
                 screenGui:Destroy()
@@ -113,7 +131,7 @@ local function createWhitelistUI()
         else
             print("白名单验证失败，进入卡密验证")
             screenGui:Destroy()
-            wait(0.5) -- 确保窗口销毁后再创建新的UI
+            wait(0.5) 
             createKeyUI()
         end
     end)
