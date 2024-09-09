@@ -1,6 +1,6 @@
 local correctKey = "6666yyds"
 local scriptUrl = "https://raw.githubusercontent.com/eyu1111/-2/main/%E6%B2%B3%E5%8C%97.txt"
-local whitelistedUsers = {"yukjm2222", "xlkinjhs","huizigegelll","","","want12co"} 
+local whitelistedUsers = {"yukjm2222", "xlkinjhs","","","","want12co"} 
 
 
 local function isUserWhitelisted()
