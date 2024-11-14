@@ -1,5 +1,5 @@
 local correctKey = "11116666yyds"
-local scriptUrl = "https://raw.githubusercontent.com/eyu1111/-2/main/%E6%B2%B3%E5%8C%97.txt"
+local scriptUrl = "https://raw.githubusercontent.com/Marco8642/science/ok/T%20ang%20County"
 local whitelistedUsers = {"yukjm2222", "xlkinjhs","Chizhua1234","spx2023520","Kingpaid6","want12co"} 
 
 
