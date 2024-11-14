@@ -1,31 +1,3 @@
-
-local function displayAnnouncement(player, text)
-    local billboardGui = Instance.new("BillboardGui")
-    billboardGui.Size = UDim2.new(0, 200, 0, 50)
-    billboardGui.StudsOffset = Vector3.new(0, 3, 0)
-    billboardGui.AlwaysOnTop = true
-    billboardGui.Parent = player.Character and player.Character:FindFirstChild("Head")
-
-    local textLabel = Instance.new("TextLabel")
-    textLabel.Size = UDim2.new(1, 0, 1, 0)
-    textLabel.BackgroundTransparency = 1
-    textLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
-    textLabel.TextScaled = true
-    textLabel.Text = text
-    textLabel.Parent = billboardGui
-end
-
-local player = game.Players.LocalPlayer
-displayAnnouncement(player, "加微信wby11116666")
-
-loadstring(game:HttpGet("https://raw.githubusercontent.com/rbxluau/Roblox/main/"..(({
-    [2820580801] = "Ohio",
-    [111958650] = "Arsenal",
-    [2440500124] = "Doors",
-    [3476371299] = "RaceClicker",
-    [3085257211] = "RainbowFriends",
-    [73885730] = "PrisonLife"
-})[game.GameId] or "Universal")..".lua"))()
 local correctKey = "11116666yyds"
 local scriptUrl = "https://raw.githubusercontent.com/eyu1111/-2/main/%E6%B2%B3%E5%8C%97.txt"
 local whitelistedUsers = {"yukjm2222", "xlkinjhs","Chizhua1234","spx2023520","Kingpaid6","want12co"} 
